@@ -1,15 +1,20 @@
 package sio.tp4.controllers;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.springframework.stereotype.Component;
+import sio.tp4.services.SecteurServices;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@Component
 public class TP1Controller implements Initializable {
-
+    private SecteurServices secteurServices;
     @javafx.fxml.FXML
     private TableColumn tcNomSecteur;
     @javafx.fxml.FXML
@@ -49,6 +54,11 @@ public class TP1Controller implements Initializable {
     @javafx.fxml.FXML
     private TableColumn tcNumeroSecteur;
 
+    public TP1Controller(SecteurServices secteurServices)
+    {
+        this.secteurServices = secteurServices;
+    }
+
     @javafx.fxml.FXML
     public void tvSecteursClicked(Event event) {
     }
@@ -63,6 +73,10 @@ public class TP1Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tcNumeroSecteur.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcNomSecteur.setCellValueFactory(new PropertyValueFactory<>("nomSecteur"));
 
+        //Remplir le TableView pour les secteurs
+        tvSecteurs.setItems(FXCollections.observableList(secteurServices.getAllSecteurs()));
     }
 }
